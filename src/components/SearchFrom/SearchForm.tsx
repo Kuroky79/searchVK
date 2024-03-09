@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { SearchContext } from "../SearchResults/SearchContext";
-
+import './styles.css'
 export function SearchForm() {
     const [query, setQuery] = useState("");
     const [loading, setLoading] = useState(false);
@@ -40,15 +40,11 @@ export function SearchForm() {
                     onChange={(event) => setQuery(event.target.value)}
                     placeholder="Search..."
                 />
-                <button type="submit" disabled={loading}>
+                <button type="submit" style={{marginTop: 15}}  disabled={loading}>
                     {loading ? "Searching..." : "Search"}
                 </button>
             </form>
-            <div>
-                {userLastNames.map((lastName, index) => (
-                    <p key={index}>{lastName}</p>
-                ))}
-            </div>
+
             {error && <p>{error}</p>}
         </div>
     );
