@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { SearchContext } from "../SearchResults/SearchContext";
+import React, {useState, useContext, useEffect} from "react";
+import { SearchContext } from "../SearchResults/SearchContext.ts";
 import "./styles.css";
 import PageLoader from "../PageLoader/PageLoader.tsx";
 
@@ -29,6 +29,7 @@ export function SearchForm() {
             if (!response.ok) {
                 throw new Error("Failed to fetch users");
             }
+
             const data = await response.json();
             console.log("Data:", data); // Log data
             setUsers(data.users); // Store users in context
