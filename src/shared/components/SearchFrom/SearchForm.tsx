@@ -7,15 +7,14 @@ export function SearchForm() {
     const [query, setQuery] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
-    const [filteredUsers, setFilteredUsers] = useState([]);
-    const { users, setUsers } = useContext(SearchContext); // Destructure users from context
+    const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
+    const { users, setUsers } = useContext(SearchContext);
 
-    const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSearch = async (event: React.FormEvent<HTMLFormElement>):Promise<void> => {
         event.preventDefault();
 
-        // Check if the query is empty
         if (query.trim() === '') {
-            return; // Exit the function if the query is empty
+            return;
         }
 
         setLoading(true);
@@ -30,33 +29,35 @@ export function SearchForm() {
                 throw new Error("Failed to fetch users");
             }
             const data = await response.json();
-            console.log("Data:", data); // Log data
-            setUsers(data.users); // Store users in context
-            setFilteredUsers(data.users); // Set filtered users
+            console.log("Data:", data);
+            setUsers(data.users);
+            setFilteredUsers(data.users);
         } catch (error) {
-            console.error( error); // Log error
+            console.error( error);
         } finally {
             setLoading(false);
         }
     };
-
+    useEffect(() => {
+        if(error){
+            throw Error();
+        }
+    }, [error]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value.toLowerCase();
-        setQuery(inputValue); // Update query state
+        setQuery(inputValue);
 
         if (inputValue === '') {
-            // If input is empty, set filtered users to an empty array
             setFilteredUsers([]);
         } else {
-            // Filter users based on query
             const filteredData = users.filter((user: object) =>
                 user.firstName.toLowerCase().includes(inputValue) ||
                 user.lastName.toLowerCase().includes(inputValue) ||
                 user.address.city.toLowerCase().includes(inputValue)
             );
 
-            setFilteredUsers(filteredData); // Update filteredUsers state
+            setFilteredUsers(filteredData);
         }
     };
     const onThrow = () => setError(true);
@@ -67,7 +68,7 @@ export function SearchForm() {
                 <input
                     type="text"
                     value={query}
-                    onChange={handleInputChange} // Use handleInputChange for input change
+                    onChange={handleInputChange}
                     placeholder="Search..."
                 />
                 <button type="submit" className="button" disabled={loading}>

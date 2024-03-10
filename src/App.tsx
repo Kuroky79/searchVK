@@ -1,4 +1,3 @@
-// App.js
 import React, {Suspense, useState} from "react";
 import { SearchForm } from "./shared/components/SearchFrom/SearchForm.tsx";
 import { SearchContext } from "./shared/components/SearchResults/SearchContext";

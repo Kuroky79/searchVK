@@ -1,6 +1,6 @@
 import React from 'react';
 import './style.css'
-const PageError = () => {
+const PageError: React.FC = () => {
 
     const reloadPage = () => {
         location.reload();

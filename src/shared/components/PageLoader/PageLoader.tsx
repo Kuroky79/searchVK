@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles.css'
-export const PageLoader = () => {
+export const PageLoader: React.FC = () => {
     return (
         <div>
             <div className="lds-ring">
