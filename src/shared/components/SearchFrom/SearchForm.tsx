@@ -6,7 +6,7 @@ import PageLoader from "../PageLoader/PageLoader.tsx";
 export function SearchForm() {
     const [query, setQuery] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [error, setError] = useState(false);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const { users, setUsers } = useContext(SearchContext); // Destructure users from context
 
@@ -19,7 +19,7 @@ export function SearchForm() {
         }
 
         setLoading(true);
-        setError("");
+
 
         try {
             const response = await fetch(
@@ -29,14 +29,12 @@ export function SearchForm() {
             if (!response.ok) {
                 throw new Error("Failed to fetch users");
             }
-
             const data = await response.json();
             console.log("Data:", data); // Log data
             setUsers(data.users); // Store users in context
             setFilteredUsers(data.users); // Set filtered users
         } catch (error) {
-            console.error("Error fetching users:", error); // Log error
-            setError("Error fetching users");
+            console.error( error); // Log error
         } finally {
             setLoading(false);
         }
@@ -52,16 +50,16 @@ export function SearchForm() {
             setFilteredUsers([]);
         } else {
             // Filter users based on query
-            const filteredData = users.filter((user: any) =>
-                user.lastName.toLowerCase().includes(inputValue) ||
+            const filteredData = users.filter((user: object) =>
                 user.firstName.toLowerCase().includes(inputValue) ||
+                user.lastName.toLowerCase().includes(inputValue) ||
                 user.address.city.toLowerCase().includes(inputValue)
             );
 
             setFilteredUsers(filteredData); // Update filteredUsers state
         }
     };
-
+    const onThrow = () => setError(true);
 
     return (
         <div className="searchForm">
@@ -76,9 +74,9 @@ export function SearchForm() {
                     {loading ? "Searching..." : "Search"}
                 </button>
                 {loading && <PageLoader />}
+                {/*<button style={{marginTop: 25}} onClick={onThrow}>Test</button> // test BadButton throw Error*/}
             </form>
 
-            {error && <p>{error}</p>}
         </div>
     );
 }
